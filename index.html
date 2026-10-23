@@ -51,8 +51,7 @@ import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-
 import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
 import {getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
 (()=>{'use strict';
-const firebaseConfig={apiKey:'AIzaSyCfueQA4tF1qtPWLYTUgBpRYQw_7bTNnAk',authDomain:'expense-split-f748e.firebaseapp.com',projectId:'expense-split-f748e',storageBucket:'expense-split-f748e.firebasestorage.app',messagingSenderId:'1074975210736',appId:'1:1074975210736:web:5c6f5ead25b0d0604f9635'};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const firebaseConfig={apiKey:"AIzaSyCfueQA4tF1qtPWLYTUgBpRYQw_7bTNnAk",authDomain:"expense-split-test.firebaseapp.com",projectId:"expense-split-test",storageBucket:"expense-split-test.firebasestorage.app",messagingSenderId:"427004261101",appId:"1:427004261101:web:3b968eda92f2524e1692e4"};const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 let currentUser=null,admin=false,readOnly=true,eventId=null,unsub=null,saveTimer=null,dirty=false,authResolved=false,loading=false,saveChain=Promise.resolve();
 const urlId=new URL(location.href).searchParams.get('event');
 const validId=id=>typeof id==='string'&&/^[a-f0-9]{32}$/.test(id);
