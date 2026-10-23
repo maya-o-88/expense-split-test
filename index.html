@@ -1,0 +1,239 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>みんなの費用精算</title><style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#213047;background:#f3f6fb}*{box-sizing:border-box}body{margin:0}main{max-width:680px;margin:auto;padding:18px 14px 65px}h1{font-size:24px;margin:8px 0 5px}h2{font-size:18px;margin:0 0 13px}.muted{color:#65738a;font-size:13px}.panel,.card{background:#fff;border-radius:16px;padding:17px;margin:14px 0;box-shadow:0 2px 10px #2439540d}.card{border:2px solid #c6d5ea}label{font-size:13px;font-weight:650;display:block;margin:9px 0 5px}input,select{width:100%;font:inherit;border:1px solid #ccd6e5;border-radius:9px;padding:10px;background:#fff;color:#1f2d41;min-width:0}input:disabled{background:#fff;color:#1f2d41;opacity:1;-webkit-text-fill-color:#1f2d41}select:disabled{background:#fff;color:#1f2d41;opacity:1;-webkit-text-fill-color:#1f2d41}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer;font-size:14px}button.primary{background:#2563eb;color:white}button.secondary{background:#e8efff;color:#1e4fba}button.danger{background:#fff0f0;color:#b42332}.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.pill{font-size:12px;background:#e8f0ff;color:#2252a8;border-radius:30px;padding:5px 10px}.check{display:flex;align-items:center;gap:9px;font-size:14px}.check input{width:20px;height:20px;accent-color:#2563eb}.amount{font-weight:750;font-size:22px}.result{background:#12366e;color:#fff}.result .muted{color:#d5e4fa}.result h2{color:white}.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px}.summary div{background:#ffffff19;padding:11px;border-radius:10px}.summary b{display:block;font-size:19px;margin-top:5px}.settle{margin-top:13px;padding:13px;background:#fff;color:#173c79;border-radius:11px;font-weight:800;text-align:center}.splitbox{border-left:3px solid #6e91e3;padding:9px 12px;background:#f4f7ff;border-radius:8px;margin-top:10px}.splitbox p{margin:4px 0 7px;font-size:13px}.small{font-size:12px}.empty{padding:16px;text-align:center;color:#65738a}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1}.error{color:#ad1d2c;font-size:12px}.notice{background:#fff8df;border-radius:9px;padding:10px;font-size:12px;color:#6b520d}.line{border-top:1px solid #e8edf5;margin:14px 0}.tag{font-size:12px;color:#667}.hidden{display:none}
+html{scroll-behavior:smooth}.jump{display:block;text-align:center;text-decoration:none;background:#12366e;color:#fff;border-radius:11px;padding:13px;font-weight:750;margin:10px 0 18px}.memberline{display:flex;align-items:end;gap:8px}.memberline>div{flex:1}.memberline button{margin-bottom:1px}.overview{width:100%;border-collapse:collapse;font-size:14px}.overview th,.overview td{padding:10px 5px;border-bottom:1px solid #e8edf5;text-align:left}.overview td:nth-child(3),.overview th:nth-child(3){text-align:right}.overview .flag{font-size:11px;color:#516ba0}.overview{font-size:12px;table-layout:fixed}.overview th,.overview td{overflow-wrap:anywhere;padding:9px 3px}.overview th:nth-child(1){width:30%}.overview th:nth-child(2){width:20%}.overview th:nth-child(3){width:25%}.overview th:nth-child(4){width:25%}.overview td:nth-child(4),.overview th:nth-child(4){text-align:right}.overview .per{color:#425e85;font-size:12px}.summary{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.settlementline{padding:7px 0;border-bottom:1px solid #e4eaf5}.subhead{font-weight:700;margin:18px 0 8px}.card .top{justify-content:flex-end}.card label.check{margin-top:14px}.memberline .danger{padding:10px}.splitrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.splitrow input:disabled{background:#edf1f5}.result{scroll-margin-top:14px}.membergrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;margin-top:8px}.memberline{min-width:0;gap:4px}.memberline input{padding:9px 7px}.memberline .danger{padding:7px 6px;font-size:11px}.inputcard{padding:11px 12px;margin:11px 0;background:#fff;border-color:#b9cbe4;box-shadow:0 2px 6px #1b467013}.inputcard:nth-child(even){background:#fff}.inputcard.locked{border-color:#b9cbe4}.inputcard.locked input:disabled,.inputcard.locked select:disabled{background:#fff;color:#1f2d41;opacity:1;-webkit-text-fill-color:#1f2d41}.inputcard:not(.locked) input:not([type=checkbox]),.inputcard:not(.locked) select{background:#eff6ff;border-color:#9dc2f4}.lockbutton{font-size:14px;padding:8px 9px;white-space:nowrap}.lockbutton.islocked{background:#dce5f2;color:#2d466a}.inputcard label{margin:5px 0 4px}.itemheader{display:grid;grid-template-columns:minmax(0,1fr) 30px;gap:8px;align-items:end}.icondelete{width:30px;height:30px;padding:0!important;border-radius:8px;font-size:21px!important;line-height:1;margin-bottom:4px}.itemmid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;margin-top:3px}.checkwrap{padding-bottom:8px}.checkwrap .check{white-space:nowrap;font-size:12px;gap:4px;margin:0}.checkwrap .check input{width:17px;height:17px}.inputcard .row{margin-top:4px}.inputcard input,.inputcard select{padding:8px}.lockbutton .lockicon{font-size:16px;margin-right:5px}.resultwarning{margin-top:13px;background:#fff1df;color:#823a0b;border:2px solid #ffbc65;border-radius:10px;padding:12px;font-size:14px;font-weight:700}.resultwarning small{display:block;font-size:12px;margin-top:5px;font-weight:500}.backtop{display:block;text-align:center;margin:10px 0 18px;padding:12px;color:#1749a0;background:#e8efff;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px} </style><style>
+/* Ver.0.7: ロックボタンを右下に固定し、状態による幅の変化を防止 */
+.inputcard .row{align-items:end;grid-template-columns:minmax(0,1fr) 112px}
+.inputcard .lockwrap{display:flex;justify-content:flex-end;align-items:flex-end;min-width:0}
+.inputcard .lockbutton{width:112px;min-width:112px;max-width:100%;height:39px;display:inline-flex;justify-content:center;align-items:center;font-size:14px;white-space:nowrap;padding:8px 6px}
+/* ロック時と編集時の入力欄の色を入れ替える */
+.inputcard.locked input:disabled:not([type=checkbox]),.inputcard.locked select:disabled{background:#eff6ff!important;border-color:#9dc2f4!important;color:#1f2d41!important;opacity:1;-webkit-text-fill-color:#1f2d41}
+.inputcard:not(.locked) input:not([type=checkbox]),.inputcard:not(.locked) select{background:#fff!important;border-color:#ccd6e5!important}
+
+/* 一般閲覧者：編集用の操作だけを隠し、データ表示は維持 */
+#eventBody.viewer-only #addMember,
+#eventBody.viewer-only #add,
+#eventBody.viewer-only .memberline button.danger,
+#eventBody.viewer-only .icondelete,
+#eventBody.viewer-only .lockwrap,
+#eventBody.viewer-only #importBtn,
+#eventBody.viewer-only #reset,
+#eventBody.viewer-only #saveDivider,
+#eventBody.viewer-only #storageStatus {display:none!important}
+#eventBody.viewer-only .itemheader {grid-template-columns:minmax(0,1fr)}
+#eventBody.viewer-only .inputcard .row {grid-template-columns:minmax(0,1fr)}
+#eventBody.viewer-only input:disabled:not([type=checkbox]),
+#eventBody.viewer-only select:disabled {background:#f7f9fc!important;border-color:#e2e8f0!important;color:#1f2d41!important;opacity:1;-webkit-text-fill-color:#1f2d41}
+#eventBody.viewer-only input[type=checkbox]:disabled {opacity:1}
+/* 画面上部のモード表示と閲覧者用ログイン */
+.apphead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.apphead h1{margin:8px 0 5px}
+#viewerLogin{font-size:11px;padding:9px 10px;white-space:nowrap;flex-shrink:0}
+#modeStatus{margin-top:2px}
+/* 管理者トップのイベント一覧 */
+#eventListPanel .event-entry{display:block;width:100%;text-align:left;background:#f3f7ff;color:#173c79;margin:8px 0;padding:13px;border:1px solid #d3e2f6;border-radius:10px}
+#eventListPanel .event-entry .listdate{font-size:11px;color:#65738a;font-weight:400;margin-top:4px}
+#eventListPanel .event-list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:stretch;margin:8px 0}
+#eventListPanel .event-list-row .event-entry{margin:0;min-width:0;overflow-wrap:anywhere}
+#eventListPanel .event-list-row .event-delete{font-size:12px;padding:10px 12px;border:1px solid #f0ced0}
+#eventListPanel .event-delete:disabled{opacity:.55;cursor:wait}
+#backToEvents{margin:0 0 12px;width:100%}
+</style></head><body><main id="top">
+<div class="apphead"><h1>🧾 みんなの費用精算</h1><button type="button" id="viewerLogin" class="secondary hidden">管理者ログイン</button></div><div id="modeStatus" class="muted hidden" role="status"></div>
+<section class="panel" id="cloudPanel"><h2>☁️ 共有イベント</h2><p id="authStatus" class="muted">接続中…</p><div class="actions"><button id="login" class="primary hidden">Googleで管理者ログイン</button><button id="logout" class="secondary hidden">ログアウト</button><button id="newEvent" class="secondary hidden">＋ 新しいイベント</button></div><div id="shareBox" class="hidden"><label for="shareUrl">閲覧用URL（参加者に共有）</label><input id="shareUrl" readonly><button id="copyUrl" class="secondary" style="margin-top:8px">URLをコピー</button></div><p id="cloudStatus" class="muted"></p></section><section class="panel hidden" id="eventListPanel"><h2>📋 イベント一覧</h2><p id="eventListStatus" class="muted">読み込み中…</p><div id="eventList"></div></section><div id="eventBody" class="hidden"><button type="button" id="backToEvents" class="secondary hidden">← イベント一覧へ戻る</button><section class="panel"><label for="trip">タイトル</label><input id="trip" placeholder="例：東京旅行"><div id="members"></div><button id="addMember" class="secondary" style="margin-top:12px">＋ メンバー追加</button></section>
+<a class="jump" href="#result">💰 精算結果を見る ↓</a>
+<section class="panel"><h2 id="itemsHeading">入力</h2><div id="items"></div><button id="add" class="primary" style="width:100%;margin-top:10px">＋ 項目を追加</button><div class="line"></div><h2 id="exceptionsHeading">折半しない費用の負担設定</h2><div id="exceptions"></div></section>
+<section class="panel"><h2>一覧</h2><div id="overview"></div></section>
+<section class="panel result" id="result"><h2>💰 精算結果</h2><div id="summary" class="summary"></div><div id="settle" class="settle"></div><div id="splitWarning" class="resultwarning hidden" role="status"></div></section><a class="backtop" href="#top">↑ 画面上部へ戻る</a>
+<section class="panel"><h2>データの保存</h2><p id="saveDescription" class="muted">編集内容はFirestoreへ自動保存します。念のためJSONバックアップも利用できます。</p><div class="actions"><button class="secondary" id="export">JSONバックアップ</button><button class="secondary" id="importBtn">バックアップ読込</button></div><input type="file" id="importFile" accept=".json,application/json" class="hidden"><div class="line" id="saveDivider"></div><button class="danger" id="reset">このイベントのデータを初期化</button><p id="storageStatus" class="muted"></p></section>
+<p class="muted" style="font-size:11px;line-height:1.7;margin:18px 4px 0">※ 均等割りで1円未満の端数が出る場合、1円単位でメンバー登録順に割り振ります。次の項目では前回の続きから割り振り、全体の負担額ができるだけ均等になるよう調整します。個別計算の項目は対象外です。</p>
+</div></main><script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
+import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+import {getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
+(()=>{'use strict';
+const firebaseConfig={apiKey:'AIzaSyCfueQA4tF1qtPWLYTUgBpRYQw_7bTNnAk',authDomain:'expense-split-f748e.firebaseapp.com',projectId:'expense-split-f748e',storageBucket:'expense-split-f748e.firebasestorage.app',messagingSenderId:'1074975210736',appId:'1:1074975210736:web:5c6f5ead25b0d0604f9635'};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+let currentUser=null,admin=false,readOnly=true,eventId=null,unsub=null,saveTimer=null,dirty=false,authResolved=false,loading=false,saveChain=Promise.resolve();
+const urlId=new URL(location.href).searchParams.get('event');
+const validId=id=>typeof id==='string'&&/^[a-f0-9]{32}$/.test(id);
+const authStatus=document.getElementById('authStatus'),cloudStatus=document.getElementById('cloudStatus');
+const show=(id,yes)=>document.getElementById(id).classList.toggle('hidden',!yes);
+const setCloudStatus=msg=>{cloudStatus.textContent=msg};
+function refreshAccess(){
+  readOnly=!admin||!eventId;
+  const viewerActive=authResolved&&!admin&&!!eventId&&!loading;
+  show('cloudPanel',!viewerActive);
+  show('viewerLogin',viewerActive);
+  show('modeStatus',authResolved&&!!eventId&&!loading);
+  document.getElementById('modeStatus').textContent=admin?'管理モード':'閲覧専用：最新の内容を表示しています';
+  show('login',!currentUser);show('logout',!!currentUser);show('newEvent',admin);
+  show('eventListPanel',authResolved&&admin&&!eventId);
+  show('backToEvents',authResolved&&admin&&!!eventId&&!loading);
+  show('eventBody',!!eventId&&loading===false);
+  show('shareBox',!!eventId&&loading===false);
+  if(eventId)document.getElementById('shareUrl').value=location.href;
+  authStatus.textContent=currentUser?'Googleログイン中（編集権限はFirestoreが判定）':'未ログイン（閲覧のみ）';
+  const body=document.getElementById('eventBody');
+  body.classList.toggle('viewer-only',readOnly);
+  document.getElementById('itemsHeading').textContent=readOnly?'費用の内訳':'入力';
+  document.getElementById('exceptionsHeading').textContent=readOnly?'個別負担の内訳':'折半しない費用の負担設定';
+  document.getElementById('saveDescription').textContent=readOnly?'現在のイベント内容をJSON形式で保存できます。':'編集内容はFirestoreへ自動保存します。念のためJSONバックアップも利用できます。';
+  // render() が生成する入力欄を閲覧時は操作不可にする。
+  // 管理者の場合は renderItems() などで設定したロック状態を維持する。
+  if(readOnly){
+    body.querySelectorAll('input:not(#importFile),select,button:not(#export)').forEach(el=>{el.disabled=true});
+  }else{
+    document.getElementById('trip').disabled=false;
+    document.getElementById('backToEvents').disabled=false;
+    ['add','addMember','importBtn','reset'].forEach(id=>{document.getElementById(id).disabled=false});
+  }
+}
+
+function queueCloudSave(){
+  if(readOnly||!eventId||loading)return;
+  dirty=true;setCloudStatus('保存待ち…');clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    const id=eventId,data=JSON.parse(JSON.stringify(state));
+    saveChain=saveChain.then(async()=>{
+      if(id!==eventId)return;
+      await setDoc(doc(db,'events',id),{data,updatedAt:Date.now()});
+      if(id===eventId){dirty=false;setCloudStatus('☁️ 保存しました')}
+    }).catch(err=>{setCloudStatus('保存失敗：'+err.message+'（再度編集して保存してください）')});
+  },650);
+}
+function watchEvent(id){
+  if(unsub){unsub();unsub=null} clearTimeout(saveTimer);dirty=false;
+  eventId=id;loading=true;refreshAccess();setCloudStatus('イベントを読み込み中…');
+  const ref=doc(db,'events',id);
+  unsub=onSnapshot(ref,snap=>{
+    if(id!==eventId)return;
+    if(!snap.exists()){loading=true;refreshAccess();setCloudStatus('イベントが見つかりません。URLを確認してください。');return}
+    if(dirty)return;
+    const next=normalize(snap.data().data);
+    if(!next){loading=true;refreshAccess();setCloudStatus('イベントのデータ形式が正しくありません。');return}
+    state=next;loading=false;document.getElementById('trip').value=state.trip;render();refreshAccess();
+    setCloudStatus(readOnly?'閲覧専用：最新の内容を表示しています':'☁️ 保存済み');
+  },err=>{loading=true;refreshAccess();setCloudStatus('読み込みエラー：'+err.message)});
+}
+async function createEvent(){
+  if(!admin)return;
+  if(eventId&&!confirm('新しいイベントを作成しますか？ 現在のイベントは専用URLで引き続き開けます。'))return;
+  if(dirty){alert('現在の変更を保存中です。少し待ってから再度試してください。');return}
+  const id=Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('');
+  const data={trip:'新しいイベント',people:['自分','友達'],items:[]};
+  setCloudStatus('新しいイベントを作成中…');
+  try{await setDoc(doc(db,'events',id),{data,updatedAt:Date.now()});const u=new URL(location.href);u.searchParams.set('event',id);location.href=u.toString()}
+  catch(err){setCloudStatus('作成失敗：'+err.message)}
+}
+async function loadEventList(){
+  const panel=document.getElementById('eventList');
+  const status=document.getElementById('eventListStatus');
+  panel.replaceChildren();
+  if(!currentUser||eventId)return;
+  status.textContent='イベントを読み込み中…';
+  const expectedUser=currentUser;
+  try{
+    const snapshot=await getDocs(collection(db,'events'));
+    if(currentUser!==expectedUser||eventId)return;
+    const events=snapshot.docs.map(d=>({id:d.id,title:d.data()?.data?.trip||'タイトル未設定',updatedAt:d.data()?.updatedAt}));
+    events.sort((a,b)=>(Number(b.updatedAt)||0)-(Number(a.updatedAt)||0));
+    status.textContent=events.length?`${events.length}件のイベントがあります。`:'イベントはまだありません。「＋ 新しいイベント」から作成できます。';
+    for(const ev of events){
+      const row=document.createElement('div');row.className='event-list-row';
+      const btn=document.createElement('button');
+      btn.type='button';btn.className='event-entry';
+      const name=document.createElement('div');name.textContent=ev.title;btn.appendChild(name);
+      if(Number.isFinite(ev.updatedAt)){
+        const small=document.createElement('div');small.className='listdate';
+        small.textContent='最終更新：'+new Date(ev.updatedAt).toLocaleString('ja-JP');btn.appendChild(small);
+      }
+      btn.addEventListener('click',()=>{const u=new URL(location.href);u.searchParams.set('event',ev.id);location.href=u.toString()});
+      row.appendChild(btn);
+      const del=document.createElement('button');
+      del.type='button';del.className='danger event-delete';del.textContent='削除';
+      del.setAttribute('aria-label',`「${ev.title}」を削除`);
+      del.addEventListener('click',()=>deleteListedEvent(ev,del));
+      row.appendChild(del);panel.appendChild(row);
+    }
+  }catch(err){
+    if(currentUser!==expectedUser||eventId)return;
+    status.textContent=err.code==='permission-denied'?'イベント一覧の取得権限がありません。管理者アカウントでログインしているか確認してください。':'一覧の取得に失敗しました：'+err.message;
+  }
+}
+async function deleteListedEvent(ev,button){
+  if(!currentUser||!admin||eventId)return;
+  const name=ev.title;
+  if(!confirm(`「${name}」を削除しますか？\n\nメンバー・支出・精算データが完全に消え、共有URLも使えなくなります。\n削除する前に、このイベントのJSONバックアップを保存することをおすすめします。\n\n［キャンセル］で戻れます。`))return;
+  const answer=prompt(`最終確認：本当に削除する場合は、次のイベント名を正確に入力してください。\n\n${name}\n\n※ この操作は取り消せません。`);
+  if(answer===null)return;
+  if(answer!==name){alert('イベント名が一致しないため、削除しませんでした。');return}
+  if(!currentUser||!admin||eventId)return;
+  button.disabled=true;
+  const original=button.textContent;button.textContent='削除中…';
+  try{
+    await deleteDoc(doc(db,'events',ev.id));
+    await loadEventList();
+    setCloudStatus(`「${name}」を削除しました。`);
+  }catch(err){
+    button.disabled=false;button.textContent=original;
+    alert('削除できませんでした：'+err.message);
+  }
+}
+function boot(){
+  document.getElementById('login').addEventListener('click',async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){setCloudStatus('ログイン失敗：'+e.code+' / '+e.message);alert('ログインに失敗しました：'+e.message)}});
+  document.getElementById('viewerLogin').addEventListener('click',()=>document.getElementById('login').click());
+  document.getElementById('logout').addEventListener('click',()=>signOut(auth).catch(e=>setCloudStatus(e.message)));
+  document.getElementById('newEvent').addEventListener('click',createEvent);
+  document.getElementById('backToEvents').addEventListener('click',()=>{
+    if(dirty){alert('変更内容の保存が完了していません。画面上部に「保存しました」と表示されてから戻ってください。');return}
+    const u=new URL(location.href);u.searchParams.delete('event');location.href=u.toString();
+  });
+  document.getElementById('copyUrl').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);setCloudStatus('URLをコピーしました')}catch(e){document.getElementById('shareUrl').select();setCloudStatus('URLを選択しました。長押ししてコピーしてください')}});
+  if(urlId){if(validId(urlId))watchEvent(urlId);else setCloudStatus('イベントURLの形式が正しくありません。')}
+  else setCloudStatus('管理者はGoogleログインして「新しいイベント」を押してください。');
+  onAuthStateChanged(auth,user=>{
+    currentUser=user;
+    authResolved=true;
+    // 管理者UIDはアプリに埋め込まず、Firestoreルールが書き込み可否を判定する。
+    // 管理者判定は既存イベントへの安全な書き込みテストではなく、認証状態＋作成時の権限エラーで扱う。
+    admin=!!user;
+    if(eventId&&!loading)render();
+    else refreshAccess();
+    if(!eventId){
+      if(user)loadEventList();
+      else{document.getElementById('eventList').replaceChildren();setCloudStatus('管理者はGoogleログインしてください。')}
+    }
+  },err=>setCloudStatus('認証エラー：'+err.message));
+}
+
+const KEY='trip-split-v02',OLDKEY='trip-split-v01';
+const $=id=>document.getElementById(id),yen=n=>Math.round(n).toLocaleString('ja-JP')+'円',num=v=>Math.max(0,Math.round(Number(v)||0));
+const fresh=()=>({trip:'東京旅行',people:['自分','友達'],items:[{id:1,name:'新幹線',payer:0,amount:30000,status:'確定',exception:false,shares:[15000,15000]},{id:2,name:'ホテル',payer:1,amount:20000,status:'確定',exception:false,shares:[10000,10000]},{id:3,name:'食事',payer:0,amount:8000,status:'予定',exception:false,shares:[4000,4000]},{id:4,name:'お土産',payer:0,amount:3000,status:'確定',exception:true,shares:[3000,0]}]});
+let state=fresh(),uid=Date.now();
+function valid(v){return v&&typeof v.trip==='string'&&Array.isArray(v.people)&&v.people.length>=2&&v.people.every(p=>typeof p==='string')&&Array.isArray(v.items)&&v.items.every(x=>x&&typeof x.name==='string'&&Number.isInteger(x.payer)&&x.payer>=0&&x.payer<v.people.length&&Number.isFinite(x.amount)&&x.amount>=0&&['予定','確定'].includes(x.status)&&typeof x.exception==='boolean'&&Array.isArray(x.shares)&&x.shares.length===v.people.length&&x.shares.every(s=>Number.isFinite(s)&&s>=0)&&(!x.exception||x.shares.reduce((a,b)=>a+b,0)===x.amount))}
+function normalize(v){if(!v||!Array.isArray(v.people)||!Array.isArray(v.items))return null;const o=JSON.parse(JSON.stringify(v));if(o.people.length===2)for(const x of o.items){if(!Array.isArray(x.shares))x.shares=[x.share0??Math.floor(x.amount/2),x.amount-(x.share0??Math.floor(x.amount/2))];}return valid(o)?o:null}
+function load(){try{let o=normalize(JSON.parse(localStorage.getItem(KEY)));if(!o)o=normalize(JSON.parse(localStorage.getItem(OLDKEY)));if(o)state=o}catch(e){}}
+function persist(){if(readOnly||loading)return;queueCloudSave();$('storageStatus').textContent='Firestoreへ自動保存します。'}
+const names=()=>state.people.map((p,i)=>p.trim()||`${i+1}人目`);
+function make(tag,props={},parent){const el=document.createElement(tag);for(const [k,v] of Object.entries(props)){if(k==='text')el.textContent=v;else if(k==='class')el.className=v;else if(k==='value')el.value=v;else if(k==='checked')el.checked=v;else if(k==='disabled')el.disabled=v;else el.setAttribute(k,v)}if(parent)parent.appendChild(el);return el}
+function field(parent,title,type,value,fn,attrs={}){const wrap=make('div',{},parent);make('label',{text:title},wrap);const el=make('input',{type,value,...attrs},wrap);el.addEventListener('change',()=>fn(el.value));return el}
+function select(parent,title,options,value,fn){const wrap=make('div',{},parent);make('label',{text:title},wrap);const el=make('select',{},wrap);options.forEach(([v,t])=>make('option',{value:v,text:t},el));el.value=String(value);el.addEventListener('change',()=>fn(el.value));return el}
+function even(amount){const base=Math.floor(amount/state.people.length),rem=amount%state.people.length;return state.people.map((_,i)=>base+(i<rem?1:0))}
+function renderMembers(){const t=$('members');t.replaceChildren();const grid=make('div',{class:'membergrid'},t);state.people.forEach((p,i)=>{const line=make('div',{class:'memberline'},grid);const w=make('div',{},line);make('label',{text:`${i+1}人目`},w);const inp=make('input',{value:p},w);inp.addEventListener('input',()=>{state.people[i]=inp.value;persist();renderItems();renderOverview();recalc()});if(state.people.length>2){const del=make('button',{class:'danger',text:'削除'},line);del.addEventListener('click',()=>{if(!confirm(`「${names()[i]}」を削除しますか？ この人が支払った費用は削除できません。`))return;if(state.items.some(x=>x.payer===i)){alert('このメンバーが支払者になっている費用があります。支払者を変更してから削除してください。');return}if(state.items.some(x=>x.exception&&x.shares[i]>0)){alert('このメンバーに個別負担額が設定されています。負担額を変更してから削除してください。');return}state.people.splice(i,1);state.items.forEach(x=>{if(x.payer>i)x.payer--;x.shares.splice(i,1)});saveRender()})}})}
+function renderItems(){const t=$('items');t.replaceChildren();if(!state.items.length)make('div',{class:'empty',text:'費用はまだありません。下のボタンから追加できます。'},t);state.items.forEach(x=>{const locked=x.status==='確定';const card=make('div',{class:'card inputcard'+(locked?' locked':'')},t);const header=make('div',{class:'itemheader'},card);const namebox=make('div',{},header);make('label',{text:'項目名'},namebox);const name=make('input',{type:'text',value:x.name,placeholder:'項目名'},namebox);name.disabled=locked;name.addEventListener('change',()=>{x.name=name.value;saveRender()});const del=make('button',{class:'danger icondelete',text:'×',type:'button','aria-label':'項目を削除',title:'項目を削除',disabled:locked},header);del.addEventListener('click',()=>{if(confirm(`「${x.name||'名称なし'}」（${yen(x.amount)}・${x.status}）を削除しますか？`)){state.items=state.items.filter(y=>y!==x);saveRender()}});
+const mid=make('div',{class:'itemmid'},card);const amtbox=make('div',{},mid);const amt=field(amtbox,'金額（円）','number',x.amount,v=>{if(v.trim()===''||!Number.isFinite(Number(v))||Number(v)<0){alert('0以上の金額を入力してください');renderItems();return}x.amount=num(v);x.shares=even(x.amount);saveRender()},{min:'0',step:'1',inputmode:'numeric'});amt.disabled=locked;const checkwrap=make('div',{class:'checkwrap'},mid);const label=make('label',{class:'check'},checkwrap),cb=make('input',{type:'checkbox',checked:x.exception},label);make('span',{text:'折半しない'},label);cb.disabled=locked;cb.addEventListener('change',()=>{x.exception=cb.checked;if(cb.checked)x.shares=even(x.amount);saveRender()});
+const row=make('div',{class:'row'},card);const payer=select(row,'支払者',names().map((n,i)=>[i,n]),x.payer,v=>{x.payer=Number(v);saveRender()});payer.disabled=locked;const lockwrap=make('div',{class:'lockwrap'},row);const lock=make('button',{class:'secondary lockbutton'+(locked?' islocked':''),text:(locked?'🔒 ロック中':'🔓 ロックする'),type:'button','aria-pressed':String(locked)},lockwrap);lock.addEventListener('click',()=>{x.status=locked?'予定':'確定';saveRender()});});renderExceptions()}
+function renderExceptions(){const t=$('exceptions');t.replaceChildren();const xs=state.items.filter(x=>x.exception);if(!xs.length){make('div',{class:'empty',text:'該当する費用はありません。'},t);return}xs.forEach(x=>{const card=make('div',{class:'splitbox'},t);make('b',{text:x.name||'名称なし'},card);make('p',{text:`金額：${yen(x.amount)} ／ 支払者：${names()[x.payer]}`},card);const wrap=make('div',{class:'splitrow'},card);x.shares.forEach((s,i)=>{const inp=field(wrap,`${names()[i]}の精算額`,'number',s,v=>{if(v.trim()===''||!Number.isFinite(Number(v))||Number(v)<0){alert('0以上の金額を入力してください');renderExceptions();return}const n=num(v);if(i===state.people.length-1){alert('最後のメンバーの負担額は自動計算されます。');renderExceptions();return}const other=x.shares.slice(0,-1).reduce((sum,a,j)=>sum+(j===i?n:a),0);if(other>x.amount){alert('負担額の合計が費用を超えています。');renderExceptions();return}x.shares[i]=n;x.shares[x.shares.length-1]=x.amount-other;saveRender()},{min:'0',step:'1',inputmode:'numeric'});inp.disabled=x.status==='確定'||i===state.people.length-1});void 0})}
+function renderOverview(){const t=$('overview');t.replaceChildren();if(!state.items.length){make('div',{class:'empty',text:'登録された費用はありません。'},t);return}const table=make('table',{class:'overview'},t),thead=make('thead',{},table),hr=make('tr',{},thead);['項目','支払者','金額','1人あたり'].forEach(h=>make('th',{text:h},hr));const body=make('tbody',{},table);state.items.forEach(x=>{const tr=make('tr',{},body),td=make('td',{},tr);make('span',{text:x.name||'名称なし'},td);make('td',{text:names()[x.payer]},tr);make('td',{text:yen(x.amount)},tr);const each=make('td',{class:'per'},tr);make('span',{text:x.exception?'個別計算':(x.amount%state.people.length===0?yen(x.amount/state.people.length):'約'+(x.amount/state.people.length).toLocaleString('ja-JP',{maximumFractionDigits:2})+'円')},each)});}
+function recalc(){const n=state.people.length,paid=Array(n).fill(0),owed=Array(n).fill(0);let nextRemainderMember=0;state.items.forEach(x=>{paid[x.payer]+=x.amount;let shares;if(x.exception){shares=x.shares}else{const base=Math.floor(x.amount/n),rem=x.amount%n;shares=Array(n).fill(base);for(let j=0;j<rem;j++)shares[(nextRemainderMember+j)%n]++;nextRemainderMember=(nextRemainderMember+rem)%n}shares.forEach((v,i)=>owed[i]+=v)});const t=$('summary');t.replaceChildren();names().forEach((name,i)=>{const box=make('div',{},t);make('span',{text:name},box);make('div',{class:'small',text:'支払額 '+yen(paid[i])},box);make('div',{class:'small',text:'負担額 '+yen(owed[i])},box);const d=paid[i]-owed[i];make('b',{text:'差額 '+(d>=0?'+':'−')+yen(Math.abs(d))},box)});const creditors=[],debtors=[];paid.forEach((v,i)=>{const d=v-owed[i];if(d>0)creditors.push({i,v:d});if(d<0)debtors.push({i,v:-d})});const settle=$('settle');settle.replaceChildren();if(!debtors.length){make('div',{text:'精算不要（差額なし）'},settle)}let a=0,b=0;while(a<debtors.length&&b<creditors.length){const amt=Math.min(debtors[a].v,creditors[b].v);make('div',{class:'settlementline',text:`${names()[debtors[a].i]} → ${names()[creditors[b].i]} に ${yen(amt)} 支払う`},settle);debtors[a].v-=amt;creditors[b].v-=amt;if(!debtors[a].v)a++;if(!creditors[b].v)b++}const pending=state.items.filter(x=>x.exception&&x.shares.every((v,i)=>v===even(x.amount)[i]));const warning=$('splitWarning');warning.replaceChildren();warning.classList.toggle('hidden',pending.length===0);if(pending.length){make('div',{text:'⚠️ 折半しない項目で個別計算が未設定のものがあります'},warning);make('small',{text:'対象：'+pending.map(x=>x.name||'名称なし').join('、')+'（精算結果は暫定値です）'},warning)}}
+function render(){renderMembers();renderItems();renderOverview();recalc();refreshAccess()}
+function saveRender(){persist();render()}
+$('addMember').addEventListener('click',()=>{state.people.push(`${state.people.length+1}人目`);state.items.forEach(x=>x.shares.push(0));saveRender()});
+$('add').addEventListener('click',()=>{const x={id:++uid,name:'',payer:0,amount:0,status:'予定',exception:false,shares:state.people.map(()=>0)};state.items.push(x);saveRender();const cards=$('items').querySelectorAll('.card');cards[cards.length-1]?.scrollIntoView({behavior:'smooth',block:'center'})});
+$('trip').addEventListener('input',e=>{state.trip=e.target.value;persist()});
+$('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=make('a',{href:url,download:'費用精算バックアップ.json'},document.body);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+$('importBtn').addEventListener('click',()=>{if(readOnly)return;$('importFile').click()});
+$('importFile').addEventListener('change',async e=>{if(readOnly)return;const file=e.target.files?.[0];if(!file)return;try{const o=normalize(JSON.parse(await file.text()));if(!o)throw Error('形式が正しくありません');if(confirm('現在のデータをバックアップの内容で置き換えますか？')){state=o;persist();$('trip').value=state.trip;render()}}catch(err){alert('バックアップを読み込めませんでした：'+err.message)}e.target.value=''});
+$('reset').addEventListener('click',()=>{if(readOnly)return;if(confirm('このイベントの入力データを初期化しますか？')){state=fresh();persist();$('trip').value=state.trip;render()}});
+$('trip').value=state.trip;render();boot();
+})();</script></body></html>
