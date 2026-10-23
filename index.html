@@ -39,7 +39,7 @@ html{scroll-behavior:smooth}.jump{display:block;text-align:center;text-decoratio
 #backToEvents{margin:0 0 12px;width:100%}
 </style></head><body><main id="top">
 <div class="apphead"><h1>🧾 みんなの費用精算</h1><button type="button" id="viewerLogin" class="secondary hidden">管理者ログイン</button></div><div id="modeStatus" class="muted hidden" role="status"></div>
-<section class="panel" id="cloudPanel"><h2>☁️ 共有イベント</h2><p id="authStatus" class="muted">接続中…</p><div class="actions"><button id="login" class="primary hidden">Googleで管理者ログイン</button><button id="logout" class="secondary hidden">ログアウト</button><button id="newEvent" class="secondary hidden">＋ 新しいイベント</button></div><div id="shareBox" class="hidden"><label for="shareUrl">閲覧用URL（参加者に共有）</label><input id="shareUrl" readonly><button id="copyUrl" class="secondary" style="margin-top:8px">URLをコピー</button></div><p id="cloudStatus" class="muted"></p></section><section class="panel hidden" id="eventListPanel"><h2>📋 イベント一覧</h2><p id="eventListStatus" class="muted">読み込み中…</p><div id="eventList"></div></section><div id="eventBody" class="hidden"><button type="button" id="backToEvents" class="secondary hidden">← イベント一覧へ戻る</button><section class="panel"><label for="trip">タイトル</label><input id="trip" placeholder="例：東京旅行"><div id="members"></div><button id="addMember" class="secondary" style="margin-top:12px">＋ メンバー追加</button></section>
+<section class="panel" id="cloudPanel"><h2>☁️ 共有イベント</h2><p id="authStatus" class="muted">接続中…</p><div class="actions"><button id="login" class="primary hidden">Googleで管理者ログイン</button><button id="logout" class="secondary hidden">ログアウト</button><button id="newEvent" class="secondary hidden">＋ 新しいイベント</button></div><div id="shareBox" class="hidden"><label for="shareUrl">閲覧用URL（参加者に共有）</label><input id="shareUrl" readonly><button id="copyUrl" class="secondary" style="margin-top:8px">URLをコピー</button></div><p id="cloudStatus" class="muted"></p><div id="editLinkPanel" class="hidden"><div class="line"></div><h2>🔑 編集URLの管理（管理者のみ）</h2><label for="editUrl">編集用URL</label><input id="editUrl" readonly placeholder="未発行"><p id="editLinkStatus" class="muted"></p><div class="actions"><button id="issueEdit" class="secondary" type="button">発行・再発行</button><button id="copyEdit" class="secondary" type="button">URLをコピー</button><button id="revokeEdit" class="danger" type="button">無効化</button></div></div></section><section class="panel hidden" id="eventListPanel"><h2>📋 イベント一覧</h2><p id="eventListStatus" class="muted">読み込み中…</p><div id="eventList"></div></section><div id="eventBody" class="hidden"><button type="button" id="backToEvents" class="secondary hidden">← イベント一覧へ戻る</button><section class="panel"><label for="trip">タイトル</label><input id="trip" placeholder="例：東京旅行"><div id="members"></div><button id="addMember" class="secondary" style="margin-top:12px">＋ メンバー追加</button></section>
 <a class="jump" href="#result">💰 精算結果を見る ↓</a>
 <section class="panel"><h2 id="itemsHeading">入力</h2><div id="items"></div><button id="add" class="primary" style="width:100%;margin-top:10px">＋ 項目を追加</button><div class="line"></div><h2 id="exceptionsHeading">折半しない費用の負担設定</h2><div id="exceptions"></div></section>
 <section class="panel"><h2>一覧</h2><div id="overview"></div></section>
@@ -48,30 +48,38 @@ html{scroll-behavior:smooth}.jump{display:block;text-align:center;text-decoratio
 <p class="muted" style="font-size:11px;line-height:1.7;margin:18px 4px 0">※ 均等割りで1円未満の端数が出る場合、1円単位でメンバー登録順に割り振ります。次の項目では前回の続きから割り振り、全体の負担額ができるだけ均等になるよう調整します。個別計算の項目は対象外です。</p>
 </div></main><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
-import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
-import {getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
+import {getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInAnonymously, signOut} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+import {getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc, runTransaction} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
 (()=>{'use strict';
-const firebaseConfig={apiKey:"AIzaSyB9AU-QAhEIiU8IwXgP-sHFSZfKNzF5HUA",authDomain:"expense-split-test.firebaseapp.com",projectId:"expense-split-test",storageBucket:"expense-split-test.firebasestorage.app",messagingSenderId:"427004261101",appId:"1:427004261101:web:3b968eda92f2524e1692e4"};const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
-let currentUser=null,admin=false,readOnly=true,eventId=null,unsub=null,saveTimer=null,dirty=false,authResolved=false,loading=false,saveChain=Promise.resolve();
+const firebaseConfig={apiKey:"AIzaSyB9AU-QAhEIiU8IwXgP-sHFSZfKNzF5HUA",authDomain:"expense-split-test.firebaseapp.com",projectId:"expense-split-test",storageBucket:"expense-split-test.firebasestorage.app",messagingSenderId:"427004261101",appId:"1:427004261101:web:3b968eda92f2524e1692e4"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+let currentUser=null,admin=false,editor=false,readOnly=true,eventId=null,unsub=null,saveTimer=null,dirty=false,authResolved=false,loading=false,saveChain=Promise.resolve(),remoteUpdatedAt=null,editBusy=false;
 const urlId=new URL(location.href).searchParams.get('event');
+const editSecret=new URLSearchParams(location.hash.slice(1)).get('edit');
+const newSecret=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
+const editConfig=id=>doc(db,'editConfigs',id);
+const editClaim=(id,uid)=>doc(db,'editorClaims',id,'users',uid);
+function viewerUrl(){const u=new URL(location.href);u.hash='';return u.toString()}
+function editorUrl(secret){const u=new URL(viewerUrl());u.hash='edit='+encodeURIComponent(secret);return u.toString()}
 const validId=id=>typeof id==='string'&&/^[a-f0-9]{32}$/.test(id);
 const authStatus=document.getElementById('authStatus'),cloudStatus=document.getElementById('cloudStatus');
 const show=(id,yes)=>document.getElementById(id).classList.toggle('hidden',!yes);
 const setCloudStatus=msg=>{cloudStatus.textContent=msg};
 function refreshAccess(){
-  readOnly=!admin||!eventId;
+  readOnly=!(admin||editor)||!eventId;
   const viewerActive=authResolved&&!admin&&!!eventId&&!loading;
   show('cloudPanel',!viewerActive);
   show('viewerLogin',viewerActive);
   show('modeStatus',authResolved&&!!eventId&&!loading);
-  document.getElementById('modeStatus').textContent=admin?'管理モード':'閲覧専用：最新の内容を表示しています';
-  show('login',!currentUser);show('logout',!!currentUser);show('newEvent',admin);
+  document.getElementById('modeStatus').textContent=admin?'管理モード':editor?'編集モード':'閲覧専用：最新の内容を表示しています';
+  show('login',!currentUser||currentUser.isAnonymous);show('logout',!!currentUser);show('newEvent',admin);
+  show('editLinkPanel',admin&&!!eventId&&!loading);
   show('eventListPanel',authResolved&&admin&&!eventId);
   show('backToEvents',authResolved&&admin&&!!eventId&&!loading);
   show('eventBody',!!eventId&&loading===false);
   show('shareBox',!!eventId&&loading===false);
-  if(eventId)document.getElementById('shareUrl').value=location.href;
-  authStatus.textContent=currentUser?'Googleログイン中（編集権限はFirestoreが判定）':'未ログイン（閲覧のみ）';
+  if(eventId)document.getElementById('shareUrl').value=viewerUrl();
+  authStatus.textContent=admin?'Googleログイン中':editor?'編集用URLで認証済み':currentUser?.isAnonymous?'匿名認証中':'未ログイン（閲覧のみ）';
   const body=document.getElementById('eventBody');
   body.classList.toggle('viewer-only',readOnly);
   document.getElementById('itemsHeading').textContent=readOnly?'費用の内訳':'入力';
@@ -82,7 +90,7 @@ function refreshAccess(){
   if(readOnly){
     body.querySelectorAll('input:not(#importFile),select,button:not(#export)').forEach(el=>{el.disabled=true});
   }else{
-    document.getElementById('trip').disabled=false;
+    document.getElementById('trip').disabled=!admin;
     document.getElementById('backToEvents').disabled=false;
     ['add','addMember','importBtn','reset'].forEach(id=>{document.getElementById(id).disabled=false});
   }
@@ -92,11 +100,16 @@ function queueCloudSave(){
   if(readOnly||!eventId||loading)return;
   dirty=true;setCloudStatus('保存待ち…');clearTimeout(saveTimer);
   saveTimer=setTimeout(()=>{
-    const id=eventId,data=JSON.parse(JSON.stringify(state));
+    const id=eventId,data=JSON.parse(JSON.stringify(state)),expectedAt=remoteUpdatedAt;
     saveChain=saveChain.then(async()=>{
       if(id!==eventId)return;
-      await setDoc(doc(db,'events',id),{data,updatedAt:Date.now()});
-      if(id===eventId){dirty=false;setCloudStatus('☁️ 保存しました')}
+      const nextAt=Date.now();
+      await runTransaction(db,async tx=>{
+        const ref=doc(db,'events',id),snap=await tx.get(ref);
+        if(!snap.exists()||snap.data().updatedAt!==expectedAt)throw Error('他の端末で更新されています。変更内容をJSONバックアップしてから再読み込みしてください。');
+        tx.update(ref,{data,updatedAt:nextAt});
+      });
+      if(id===eventId){remoteUpdatedAt=nextAt;dirty=false;setCloudStatus('☁️ 保存しました')}
     }).catch(err=>{setCloudStatus('保存失敗：'+err.message+'（再度編集して保存してください）')});
   },650);
 }
@@ -110,8 +123,9 @@ function watchEvent(id){
     if(dirty)return;
     const next=normalize(snap.data().data);
     if(!next){loading=true;refreshAccess();setCloudStatus('イベントのデータ形式が正しくありません。');return}
-    state=next;loading=false;document.getElementById('trip').value=state.trip;render();refreshAccess();
+    state=next;remoteUpdatedAt=snap.data().updatedAt;loading=false;document.getElementById('trip').value=state.trip;render();refreshAccess();
     setCloudStatus(readOnly?'閲覧専用：最新の内容を表示しています':'☁️ 保存済み');
+    if(admin)loadEditLink();
   },err=>{loading=true;refreshAccess();setCloudStatus('読み込みエラー：'+err.message)});
 }
 async function createEvent(){
@@ -171,6 +185,7 @@ async function deleteListedEvent(ev,button){
   const original=button.textContent;button.textContent='削除中…';
   try{
     await deleteDoc(doc(db,'events',ev.id));
+    await deleteDoc(editConfig(ev.id)).catch(()=>{});
     await loadEventList();
     setCloudStatus(`「${name}」を削除しました。`);
   }catch(err){
@@ -178,16 +193,52 @@ async function deleteListedEvent(ev,button){
     alert('削除できませんでした：'+err.message);
   }
 }
+async function activateEditor(user){
+  if(editBusy||!eventId||!editSecret||admin)return;
+  if(!/^[a-f0-9]{64}$/.test(editSecret)){setCloudStatus('編集URLが正しくありません');return}
+  editBusy=true;setCloudStatus('編集権限を確認中…');
+  try{
+    await setDoc(editClaim(eventId,user.uid),{token:editSecret});
+    if(currentUser?.uid!==user.uid)return;
+    editor=true;render();setCloudStatus('編集モード：保存できます');
+  }catch(e){editor=false;refreshAccess();setCloudStatus('編集URLが無効、または権限がありません：'+e.message)}
+  finally{editBusy=false}
+}
+async function loadEditLink(){
+  if(!admin||!eventId)return;
+  const status=document.getElementById('editLinkStatus'),input=document.getElementById('editUrl');
+  status.textContent='確認中…';input.value='';
+  try{
+    const snap=await getDoc(editConfig(eventId));
+    if(!admin)return;
+    if(snap.exists()&&snap.data().active===true){input.value=editorUrl(snap.data().token);status.textContent='編集URLは有効です'}
+    else status.textContent='編集URLは未発行または無効です';
+  }catch(e){status.textContent='編集URLの取得に失敗：'+e.message}
+}
+async function issueEditLink(){
+  if(!admin||!eventId)return;
+  if(!confirm('新しい編集URLを発行しますか？以前の編集URLは使えなくなります。'))return;
+  try{await setDoc(editConfig(eventId),{token:newSecret(),active:true,updatedAt:Date.now()});await loadEditLink()}
+  catch(e){alert('発行に失敗しました：'+e.message)}
+}
+async function revokeEditLink(){
+  if(!admin||!eventId||!confirm('編集URLを無効化しますか？編集者は保存できなくなります。'))return;
+  try{await setDoc(editConfig(eventId),{active:false,updatedAt:Date.now()},{merge:true});await loadEditLink()}
+  catch(e){alert('無効化に失敗しました：'+e.message)}
+}
 function boot(){
   document.getElementById('login').addEventListener('click',async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){setCloudStatus('ログイン失敗：'+e.code+' / '+e.message);alert('ログインに失敗しました：'+e.message)}});
   document.getElementById('viewerLogin').addEventListener('click',()=>document.getElementById('login').click());
   document.getElementById('logout').addEventListener('click',()=>signOut(auth).catch(e=>setCloudStatus(e.message)));
   document.getElementById('newEvent').addEventListener('click',createEvent);
+  document.getElementById('issueEdit').addEventListener('click',issueEditLink);
+  document.getElementById('revokeEdit').addEventListener('click',revokeEditLink);
+  document.getElementById('copyEdit').addEventListener('click',async()=>{const val=document.getElementById('editUrl').value;if(val)await navigator.clipboard.writeText(val)});
   document.getElementById('backToEvents').addEventListener('click',()=>{
     if(dirty){alert('変更内容の保存が完了していません。画面上部に「保存しました」と表示されてから戻ってください。');return}
     const u=new URL(location.href);u.searchParams.delete('event');location.href=u.toString();
   });
-  document.getElementById('copyUrl').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);setCloudStatus('URLをコピーしました')}catch(e){document.getElementById('shareUrl').select();setCloudStatus('URLを選択しました。長押ししてコピーしてください')}});
+  document.getElementById('copyUrl').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(viewerUrl());setCloudStatus('URLをコピーしました')}catch(e){document.getElementById('shareUrl').select();setCloudStatus('URLを選択しました。長押ししてコピーしてください')}});
   if(urlId){if(validId(urlId))watchEvent(urlId);else setCloudStatus('イベントURLの形式が正しくありません。')}
   else setCloudStatus('管理者はGoogleログインして「新しいイベント」を押してください。');
   onAuthStateChanged(auth,user=>{
@@ -195,11 +246,14 @@ function boot(){
     authResolved=true;
     // 管理者UIDはアプリに埋め込まず、Firestoreルールが書き込み可否を判定する。
     // 管理者判定は既存イベントへの安全な書き込みテストではなく、認証状態＋作成時の権限エラーで扱う。
-    admin=!!user;
-    if(eventId&&!loading)render();
+    admin=!!user&&!user.isAnonymous;
+    editor=false;
+    if(editSecret&&eventId&&!admin&&user){activateEditor(user).catch(e=>setCloudStatus('編集URLの認証に失敗：'+e.message));}
+    if(editSecret&&eventId&&!user){signInAnonymously(auth).catch(e=>setCloudStatus('匿名認証に失敗：'+e.message));}
+    if(eventId&&!loading){render();if(admin)loadEditLink();}
     else refreshAccess();
     if(!eventId){
-      if(user)loadEventList();
+      if(admin)loadEventList();
       else{document.getElementById('eventList').replaceChildren();setCloudStatus('管理者はGoogleログインしてください。')}
     }
   },err=>setCloudStatus('認証エラー：'+err.message));
@@ -229,10 +283,10 @@ function render(){renderMembers();renderItems();renderOverview();recalc();refres
 function saveRender(){persist();render()}
 $('addMember').addEventListener('click',()=>{state.people.push(`${state.people.length+1}人目`);state.items.forEach(x=>x.shares.push(0));saveRender()});
 $('add').addEventListener('click',()=>{const x={id:++uid,name:'',payer:0,amount:0,status:'予定',exception:false,shares:state.people.map(()=>0)};state.items.push(x);saveRender();const cards=$('items').querySelectorAll('.card');cards[cards.length-1]?.scrollIntoView({behavior:'smooth',block:'center'})});
-$('trip').addEventListener('input',e=>{state.trip=e.target.value;persist()});
+$('trip').addEventListener('input',e=>{if(!admin)return;state.trip=e.target.value;persist()});
 $('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=make('a',{href:url,download:'費用精算バックアップ.json'},document.body);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 $('importBtn').addEventListener('click',()=>{if(readOnly)return;$('importFile').click()});
-$('importFile').addEventListener('change',async e=>{if(readOnly)return;const file=e.target.files?.[0];if(!file)return;try{const o=normalize(JSON.parse(await file.text()));if(!o)throw Error('形式が正しくありません');if(confirm('現在のデータをバックアップの内容で置き換えますか？')){state=o;persist();$('trip').value=state.trip;render()}}catch(err){alert('バックアップを読み込めませんでした：'+err.message)}e.target.value=''});
-$('reset').addEventListener('click',()=>{if(readOnly)return;if(confirm('このイベントの入力データを初期化しますか？')){state=fresh();persist();$('trip').value=state.trip;render()}});
+$('importFile').addEventListener('change',async e=>{if(readOnly)return;const file=e.target.files?.[0];if(!file)return;try{const o=normalize(JSON.parse(await file.text()));if(!o)throw Error('形式が正しくありません');if(confirm('現在のデータをバックアップの内容で置き換えますか？')){if(!admin)o.trip=state.trip;state=o;persist();$('trip').value=state.trip;render()}}catch(err){alert('バックアップを読み込めませんでした：'+err.message)}e.target.value=''});
+$('reset').addEventListener('click',()=>{if(readOnly)return;if(confirm('このイベントの入力データを初期化しますか？')){const preservedTitle=state.trip;state=fresh();if(!admin)state.trip=preservedTitle;persist();$('trip').value=state.trip;render()}});
 $('trip').value=state.trip;render();boot();
 })();</script></body></html>
